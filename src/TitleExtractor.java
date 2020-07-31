@@ -46,7 +46,7 @@ public class TitleExtractor {
         System.out.println("Reading " + args[2]);
         BufferedReader bigWikiReader = new BufferedReader(new FileReader(args[2]));
         BufferedWriter parWriter = new BufferedWriter(new FileWriter(args[3]));
-        boolean extract = args.length > 3 && args[3].equals("comp");
+        boolean extract = args.length > 3 && args[4].equals("comp");
         lineNum = 0;
         int parallel = 0;
         int comparabale = 0;
