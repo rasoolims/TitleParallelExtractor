@@ -24,19 +24,24 @@ public class TitleExtractor {
         BufferedReader smallWikiReader = new BufferedReader(new FileReader(args[1]));
         HashMap<String, String> wikiConent = new HashMap<>();
         String wikiLine = null;
+        int lineNum = 0;
         while ((wikiLine = smallWikiReader.readLine()) != null) {
             String[] sentences = wikiLine.trim().split("</s>");
             String title = sentences[0].substring(sentences[0].indexOf(">") + 1).trim();
             if (titleDict.containsKey(title)) {
                 wikiConent.put(title, wikiLine.trim());
             }
+            lineNum++;
+            if (lineNum % 1000 == 0)
+                System.out.print(lineNum + " -> " + wikiConent.size() + "\r");
         }
-        System.out.println(wikiConent.size());
+        System.out.println("\n" + wikiConent.size());
 
         System.out.println("Reading " + args[2]);
         BufferedReader bigWikiReader = new BufferedReader(new FileReader(args[2]));
         BufferedWriter parWriter = new BufferedWriter(new FileWriter(args[3]));
-
+        lineNum = 0;
+        int parallel = 0;
         while ((wikiLine = bigWikiReader.readLine()) != null) {
             String[] sentences = wikiLine.trim().split("</s>");
             String title = sentences[0].substring(sentences[0].indexOf(">") + 1).trim();
@@ -45,7 +50,13 @@ public class TitleExtractor {
                 parWriter.write(wikiLine.trim());
                 parWriter.write("\t");
                 parWriter.write("\n");
+                parallel++;
             }
+            lineNum++;
+            if (lineNum % 1000 == 0)
+                System.out.print(lineNum + " -> " + parallel + "\r");
         }
+        System.out.println("\nFinished: " + parallel);
+
     }
 }
