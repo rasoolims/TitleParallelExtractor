@@ -26,7 +26,7 @@ public class TitleExtractor {
         String wikiLine = null;
         while ((wikiLine = smallWikiReader.readLine()) != null) {
             String[] sentences = wikiLine.trim().split("</s>");
-            String title = sentences[0].substring(sentences[0].indexOf(">" + 1)).trim();
+            String title = sentences[0].substring(sentences[0].indexOf(">") + 1).trim();
             if (titleDict.containsKey(title)) {
                 wikiConent.put(title, wikiLine.trim());
             }
@@ -39,7 +39,7 @@ public class TitleExtractor {
 
         while ((wikiLine = bigWikiReader.readLine()) != null) {
             String[] sentences = wikiLine.trim().split("</s>");
-            String title = sentences[0].substring(sentences[0].indexOf(">" + 1)).trim();
+            String title = sentences[0].substring(sentences[0].indexOf(">") + 1).trim();
             if (revTitleDict.containsKey(title) && wikiConent.containsKey(revTitleDict.get(title))) {
                 parWriter.write(wikiConent.get(revTitleDict.get(title)));
                 parWriter.write(wikiLine.trim());
