@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TitleExtractor {
@@ -71,15 +72,24 @@ public class TitleExtractor {
                         if (r > 0)
                             doc_end_range = (int) Math.ceil(Math.min(1, refRegion + 0.1) * sentences.length);
 
+                        StringBuilder output = new StringBuilder();
+                        output.append(refSen);
+                        boolean hasTrans = false;
                         for (int s = doc_start_range; s < doc_end_range; s++) {
                             String sen = sentences[s];
 
                             int senLen = sen.split(" ").length;
                             double proportion = ((double) refLen) / senLen;
                             if (Math.abs(refLen - senLen) <= 3 || (0.9 <= proportion && proportion <= 1.1)) {
-                                parWriter.write(refSen + " ||| " + sen + "\n");
+                                hasTrans = true;
+                                output.append(" ||| ");
+                                output.append(sen);
                                 comparabale++;
                             }
+                        }
+                        if (hasTrans) {
+                            output.append("\n");
+                            parWriter.write(output.toString());
                         }
                     }
                 }
@@ -89,6 +99,7 @@ public class TitleExtractor {
             if (lineNum % 1000 == 0)
                 System.out.print(lineNum + " -> " + comparabale + " / " + parallel + "\r");
         }
+        parWriter.close();
         System.out.println("\nFinished: " + parallel);
     }
 }
