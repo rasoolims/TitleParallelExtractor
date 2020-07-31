@@ -9,6 +9,8 @@ public class TitleExtractor {
         BufferedReader titleReader = new BufferedReader(new FileReader(args[0]));
         HashMap<String, String> titleDict = new HashMap<>();
         HashMap<String, String> revTitleDict = new HashMap<>();
+
+        System.out.println("Reading titles");
         String titleLine = null;
         while ((titleLine = titleReader.readLine()) != null) {
             String[] titles = titleLine.trim().split("\t");
@@ -16,7 +18,9 @@ public class TitleExtractor {
             titleDict.put(titles[0], titles[1]);
             revTitleDict.put(titles[1], titles[0]);
         }
+        System.out.println(titleDict.size() + "->" + revTitleDict.size());
 
+        System.out.println("Reading " + args[1]);
         BufferedReader smallWikiReader = new BufferedReader(new FileReader(args[1]));
         HashMap<String, String> wikiConent = new HashMap<>();
         String wikiLine = null;
@@ -27,7 +31,9 @@ public class TitleExtractor {
                 wikiConent.put(title, wikiLine.trim());
             }
         }
+        System.out.println(wikiConent.size());
 
+        System.out.println("Reading " + args[2]);
         BufferedReader bigWikiReader = new BufferedReader(new FileReader(args[2]));
         BufferedWriter parWriter = new BufferedWriter(new FileWriter(args[3]));
 
