@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class TitleExtractor {
     public static String[] extractSentences(String input) {
         String[] sentences = input.trim().split("</s>");
-        sentences[0].substring(sentences[0].indexOf(">") + 1).trim();
+        sentences[0] = sentences[0].substring(sentences[0].indexOf(">") + 1).trim();
         return sentences;
     }
 
