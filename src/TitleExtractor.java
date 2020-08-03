@@ -34,8 +34,8 @@ public class TitleExtractor {
             if (titles.length != 2) continue;
             titleDict.put(titles[0], titles[1]);
             revTitleDict.put(titles[1], titles[0]);
-            String[] srcTitleWords = titles[0].toLowerCase().split(" ");
-            String[] dstTitleWords = titles[1].toLowerCase().split(" ");
+            String[] srcTitleWords = titles[0].split(" ");
+            String[] dstTitleWords = titles[1].split(" ");
             for (String word : srcTitleWords) {
                 if (!titleWordDict.containsKey(word)) {
                     titleWordDict.put(word, new HashSet<>());
@@ -82,6 +82,11 @@ public class TitleExtractor {
         while ((wikiLine = bigWikiReader.readLine()) != null) {
             String[] sentences = extractSentences(wikiLine);
             String title = sentences[0];
+            String[] titleWords = title.toLowerCase().split(" ");
+            HashSet<String> dstTitleWordSet = new HashSet<>();
+            for (String t : titleWords)
+                for (String word : revTitleWordDict.get(t))
+                    dstTitleWordSet.add(word);
 
             if (revTitleDict.containsKey(title) && wikiContent.containsKey(revTitleDict.get(title))) {
                 if (!extract) {
@@ -90,12 +95,6 @@ public class TitleExtractor {
                     parWriter.write("\t");
                     parWriter.write("\n");
                 } else {
-                    String[] titleWords = title.toLowerCase().split(" ");
-                    HashSet<String> dstTitleWordSet = new HashSet<>();
-                    for (String t : titleWords)
-                        for (String word : revTitleWordDict.get(t))
-                            dstTitleWordSet.add(word);
-
                     String[] srcSentences = extractSentences(wikiContent.get(revTitleDict.get(title)));
                     String srcTitle = srcSentences[0];
                     String[] srcTitleWords = srcTitle.toLowerCase().split(" ");
